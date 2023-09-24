@@ -5,6 +5,7 @@ import json
 import math as m
 import sys
 import os
+import requests
 
 def ms_round(ms):
     return m.ceil(ms / 1000)
@@ -85,7 +86,7 @@ def analyze(json_path):
                     print(count_phone, count_no_people)
                     print(frame)
 
-                    if frame.get("class") == 1 and not has_phone:
+                    if frame.get("class") == 1 and frame.get("confidence") >= 0.85 and not has_phone:
                         count_phone += 1
                         has_phone = True
                     elif not has_phone and frame.get("class") != 0:
@@ -180,7 +181,8 @@ def image_detect(image_path, time):
 
 def recording():
     cap = cv2.VideoCapture(0)
-    while True:
+    ret = True
+    while ret:
         model = YOLO('./rzd-cam-ai.pt')
         ret, frame = cap.read()
         result = model.track(frame, persist=True, device=0)

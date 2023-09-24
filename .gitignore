@@ -1,4 +1,5 @@
 .env
+data.db
 /ai/input
 /ai/output
 /ai/Python311
